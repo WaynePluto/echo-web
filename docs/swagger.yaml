@@ -1,4 +1,3 @@
-basePath: /v2
 definitions:
   user.User:
     properties:
@@ -14,31 +13,28 @@ definitions:
     - name
     - phone
     type: object
-host: petstore.swagger.io
+host: 127.0.0.1:8000
 info:
-  contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
+  contact: {}
   description: This is a sample server Petstore server.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
   title: Swagger Example API
   version: "1.0"
 paths:
-  /user/:id:
-    get:
+  /users:
+    post:
       consumes:
       - application/json
-      description: get user info
+      description: save user
       parameters:
-      - description: Authentication header
-        in: header
-        name: Authorization
+      - description: user info object
+        in: body
+        name: userinfo
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/user.User'
       produces:
       - application/json
       responses:
@@ -50,7 +46,32 @@ paths:
           description: Bad Request
           schema:
             type: object
-      summary: user info
+      summary: addUser
+      tags:
+      - user
+  /users/:id:
+    get:
+      consumes:
+      - application/json
+      description: get user info
+      parameters:
+      - description: user ID
+        in: path
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.User'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: getUserById
       tags:
       - user
 swagger: "2.0"

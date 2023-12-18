@@ -17,6 +17,17 @@ func Mount(e *echo.Echo) {
 	e.GET("/users/:id", getUser)
 }
 
+// SaveUser godoc
+//
+//	@Summary			addUser
+//	@Description	save user
+//	@Tags					user
+//	@Accept				json
+//	@Produce			json
+//	@Param				userinfo	body	User	true	"user info object"
+//	@Success			200 {object} User
+//	@Failure			400 {object} interface{}
+//	@Router				/users [post]
 func saveUser(c echo.Context) error {
 	cc := c.(*custom.Context)
 	var user User
@@ -31,15 +42,15 @@ func saveUser(c echo.Context) error {
 
 // GetUser godoc
 //
-//	@Summary		user info
+//	@Summary		getUserById
 //	@Description	get user info
 //	@Tags				user
 //	@Accept			json
 //	@Produce		json
-//	@Param			Authorization	header string true "Authentication header"
+//	@Param			id	path	number	true	"user ID"
 //	@Success		200 {object} User
 //	@Failure		400 {object} interface{}
-//	@Router			/user/:id [get]
+//	@Router			/users/:id [get]
 func getUser(c echo.Context) error {
 	cc := c.(*custom.Context)
 	// id := cc.Param("id")
