@@ -3,7 +3,7 @@ package main
 import (
 	"echo-web/custom"
 	_ "echo-web/docs"
-	"echo-web/user"
+	"echo-web/modules/user"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -26,9 +26,14 @@ func main() {
 	e.Use(custom.InitCtx)
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
-	user.Mount(e)
+	user.SetRouter(e)
+
+	e.Logger.SetLevel(2)
+
 	e.Logger.Fatal(e.Start(":8000"))
+
 }

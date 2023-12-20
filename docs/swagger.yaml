@@ -1,17 +1,25 @@
 definitions:
-  user.User:
+  template.TemplateModel:
     properties:
+      id:
+        type: string
+      isDeleted:
+        type: boolean
       name:
-        example: zhangsan
         type: string
-      pass:
+      num:
+        type: integer
+    type: object
+  user.UserModel:
+    properties:
+      id:
         type: string
-      phone:
-        example: "13600000000"
+      isDeleted:
+        type: boolean
+      name:
         type: string
-    required:
-    - name
-    - phone
+      num:
+        type: integer
     type: object
 host: 127.0.0.1:8000
 info:
@@ -23,25 +31,183 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
-  /users:
-    post:
+  /templates:
+    get:
       consumes:
       - application/json
-      description: save user
       parameters:
-      - description: user info object
-        in: body
-        name: userinfo
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
         required: true
-        schema:
-          $ref: '#/definitions/user.User'
+        type: integer
+      - example: 10
+        in: query
+        minimum: 1
+        name: pageSize
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.User'
+            items:
+              $ref: '#/definitions/template.TemplateModel'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: getTemplateList
+      tags:
+      - template
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: template info object
+        in: body
+        name: template-info
+        required: true
+        schema:
+          $ref: '#/definitions/template.TemplateModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/template.TemplateModel'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: addTemplate
+      tags:
+      - template
+  /templates/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: template ID
+        in: path
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/template.TemplateModel'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: updateTemplateById
+      tags:
+      - template
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: template ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/template.TemplateModel'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: getTemplateById
+      tags:
+      - template
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: template ID
+        in: path
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/template.TemplateModel'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: updateTemplateById
+      tags:
+      - template
+  /users:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        required: true
+        type: integer
+      - example: 10
+        in: query
+        minimum: 1
+        name: pageSize
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.UserModel'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: getUserList
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: user info object
+        in: body
+        name: userinfo
+        required: true
+        schema:
+          $ref: '#/definitions/user.UserModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserModel'
         "400":
           description: Bad Request
           schema:
@@ -49,11 +215,10 @@ paths:
       summary: addUser
       tags:
       - user
-  /users/:id:
-    get:
+  /users/{id}:
+    delete:
       consumes:
       - application/json
-      description: get user info
       parameters:
       - description: user ID
         in: path
@@ -66,12 +231,58 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.User'
+            $ref: '#/definitions/user.UserModel'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: updateUserById
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: user ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserModel'
         "400":
           description: Bad Request
           schema:
             type: object
       summary: getUserById
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: user ID
+        in: path
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserModel'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: updateUserById
       tags:
       - user
 swagger: "2.0"

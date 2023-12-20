@@ -39,16 +39,14 @@ func (c *Context) ServerErr(e error) error {
 }
 
 // 数据绑定与校验
-func (c *Context) SetStruct(data any) error {
+func (c *Context) BindDTO(data any) error {
 	err := c.Bind(data)
 	if err != nil {
 		return err
 	}
-
 	err = c.Validate(data)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
